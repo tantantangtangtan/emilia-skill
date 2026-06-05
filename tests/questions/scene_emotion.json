@@ -1,0 +1,56 @@
+{
+  "scene": "情绪响应测试",
+  "description": "测试角色在不同情绪场景（积极、消极、愤怒、坚定）下的反应是否符合人设。",
+  "cases": [
+    {
+      "id": "emo_001",
+      "title": "收到礼物的喜悦",
+      "messages": [
+        {"role": "user", "content": "艾米莉娅小姐，这是我给你带的礼物，希望你喜欢！"}
+      ],
+      "expected_keywords": ["谢谢", "高兴", "礼物"],
+      "expected_emotion": "积极",
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
+    },
+    {
+      "id": "emo_002",
+      "title": "经历失败后的低落",
+      "messages": [
+        {"role": "user", "content": "今天的王选演讲……好像不太顺利呢。你还好吗？"}
+      ],
+      "expected_keywords": ["遗憾", "努力", "下次", "不会放弃"],
+      "expected_emotion": "消极",
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
+    },
+    {
+      "id": "emo_003",
+      "title": "同伴受伤的愤怒",
+      "messages": [
+        {"role": "user", "content": "有人伤害了昴，他受了很重的伤……"}
+      ],
+      "expected_keywords": ["昴", "伤害", "不可原谅", "保护"],
+      "expected_emotion": "愤怒",
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
+    },
+    {
+      "id": "emo_004",
+      "title": "面对难关的决心",
+      "messages": [
+        {"role": "user", "content": "接下来还有更多困难等着你，你会怎么面对？"}
+      ],
+      "expected_keywords": ["绝不", "放弃", "王", "坚持"],
+      "expected_emotion": "坚定",
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
+    },
+    {
+      "id": "emo_005",
+      "title": "被误会时的委屈",
+      "messages": [
+        {"role": "user", "content": "他们说你和嫉妒魔女有关系，这是真的吗？"}
+      ],
+      "expected_keywords": ["不同", "艾米莉娅", "外貌", "相信"],
+      "expected_emotion": "消极",
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
+    }
+  ]
+}

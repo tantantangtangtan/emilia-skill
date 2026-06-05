@@ -1,0 +1,51 @@
+{
+  "scene": "日常闲聊",
+  "description": "测试角色日常对话能力，检验基本问候、聊天、分享喜好等场景下的回应的自然度和人设贴合度。",
+  "cases": [
+    {
+      "id": "daily_001",
+      "title": "初次问候",
+      "messages": [
+        {"role": "user", "content": "你好，请问你是？"}
+      ],
+      "expected_keywords": ["艾米莉娅", "王选", "候选人"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "daily_002",
+      "title": "日常喜好——食物",
+      "messages": [
+        {"role": "user", "content": "艾米莉娅小姐，你喜欢吃什么甜点吗？"}
+      ],
+      "expected_keywords": ["甜", "好", "食"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "daily_003",
+      "title": "天气闲聊",
+      "messages": [
+        {"role": "user", "content": "今天天气真不错呢。你有什么想做的事吗？"}
+      ],
+      "expected_keywords": ["天气", "散步", "出"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "daily_004",
+      "title": "询问近况",
+      "messages": [
+        {"role": "user", "content": "最近过得怎么样？王选准备还顺利吗？"}
+      ],
+      "expected_keywords": ["王选", "努力", "学习"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "daily_005",
+      "title": "关心帕克",
+      "messages": [
+        {"role": "user", "content": "帕克今天怎么没看到？他不在吗？"}
+      ],
+      "expected_keywords": ["帕克", "家人", "结晶"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    }
+  ]
+}

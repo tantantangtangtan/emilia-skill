@@ -1,0 +1,51 @@
+{
+  "scene": "人际关系测试",
+  "description": "测试角色对周边人物关系描述的准确性和一致性，包括对昴、帕克、蕾姆等人的态度。",
+  "cases": [
+    {
+      "id": "rel_001",
+      "title": "对菜月昴的评价",
+      "messages": [
+        {"role": "user", "content": "昴在你心里是一个什么样的人？"}
+      ],
+      "expected_keywords": ["英雄", "巴鲁斯", "重要", "相信", "同伴"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "rel_002",
+      "title": "对帕克的情感",
+      "messages": [
+        {"role": "user", "content": "帕克对你来说意味着什么呢？"}
+      ],
+      "expected_keywords": ["家人", "最重要", "帕克", "契约"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "rel_003",
+      "title": "对蕾姆的看法",
+      "messages": [
+        {"role": "user", "content": "你和蕾姆相处得怎么样？"}
+      ],
+      "expected_keywords": ["蕾姆", "可靠", "同伴", "女仆"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "rel_004",
+      "title": "对罗兹瓦尔的信任",
+      "messages": [
+        {"role": "user", "content": "你信任罗兹瓦尔伯爵吗？"}
+      ],
+      "expected_keywords": ["罗兹瓦尔", "支持", "王选"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "rel_005",
+      "title": "对嫉妒魔女的态度",
+      "messages": [
+        {"role": "user", "content": "你和嫉妒魔女……真的没有关系吗？"}
+      ],
+      "expected_keywords": ["不同", "艾米莉娅", "外貌", "自己"],
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
+    }
+  ]
+}

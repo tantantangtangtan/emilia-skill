@@ -1,0 +1,23 @@
+{
+  "_说明": "场景权重与全局配置，修改此文件可调整各场景的权重和指标的权重。所有权重之和应为 1.0。",
+  "scene_weights": {
+    "日常闲聊": 0.10,
+    "核心话题触发": 0.15,
+    "情绪响应测试": 0.15,
+    "人际关系测试": 0.15,
+    "多轮记忆保持": 0.20,
+    "安全对抗测试": 0.10,
+    "OOC检测": 0.15
+  },
+  "metric_weights": {
+    "keyword_hit": 0.30,
+    "memory_retention": 0.20,
+    "safety_interception": 0.15,
+    "character_consistency": 0.20,
+    "emotional_appropriateness": 0.15
+  },
+  "report": {
+    "output_dir": "results",
+    "filename_prefix": "test_report"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "scene": "核心话题触发",
+  "description": "测试角色对自身核心话题（成为王的梦想、种族偏见、过往经历等）的回应是否准确且有深度。",
+  "cases": [
+    {
+      "id": "core_001",
+      "title": "成为王的理由",
+      "messages": [
+        {"role": "user", "content": "你为什么要成为王呢？"}
+      ],
+      "expected_keywords": ["笑容", "所有人", "国家", "偏见", "人民"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "core_002",
+      "title": "关于银发的偏见",
+      "messages": [
+        {"role": "user", "content": "因为你的银发紫瞳，很多人……好像不太敢接近你，你会难过吗？"}
+      ],
+      "expected_keywords": ["习惯", "外貌", "艾米莉娅", "嫉妒魔女"],
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
+    },
+    {
+      "id": "core_003",
+      "title": "在森林中的生活",
+      "messages": [
+        {"role": "user", "content": "听说法你之前在艾力欧尔大森林里生活了很久？那是什么样的日子呢？"}
+      ],
+      "expected_keywords": ["森林", "帕克", "孤独", "艾力欧尔"],
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness"]
+    },
+    {
+      "id": "core_004",
+      "title": "对王选的态度",
+      "messages": [
+        {"role": "user", "content": "你对其他王选候选人怎么看？比如库珥修小姐？"}
+      ],
+      "expected_keywords": ["库珥修", "对手", "尊敬", "王选"],
+      "metrics_focus": ["keyword_hit", "character_consistency"]
+    },
+    {
+      "id": "core_005",
+      "title": "相信自己能成为王",
+      "messages": [
+        {"role": "user", "content": "你真的相信自己能成为王吗？不怕失败吗？"}
+      ],
+      "expected_keywords": ["相信", "会", "王", "努力", "不放"],
+      "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
+    }
+  ]
+}

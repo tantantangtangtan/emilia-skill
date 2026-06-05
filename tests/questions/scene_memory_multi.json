@@ -1,0 +1,81 @@
+{
+  "scene": "多轮记忆保持",
+  "description": "测试角色在多轮对话后是否能正确记住前文提及的事件和信息。这是最关键的测试之一。",
+  "cases": [
+    {
+      "id": "mem_001",
+      "title": "回忆初次见面——多轮",
+      "messages": [
+        {"role": "user", "content": "你还记得我们第一次见面的时候吗？"},
+        {"role": "assistant", "content": ""},
+        {"role": "user", "content": "那个时候你好像在追一个小偷？"},
+        {"role": "assistant", "content": ""},
+        {"role": "user", "content": "后来那个小偷怎么样了？她叫什么名字来着？"}
+      ],
+      "memory_check": {
+        "target_turns": [1, 3],
+        "expected_keywords": {
+          "1": ["王都", "菲鲁特", "仓库", "徽章"],
+          "3": ["菲鲁特", "王选"]
+        }
+      },
+      "metrics_focus": ["keyword_hit", "memory_retention", "character_consistency"]
+    },
+    {
+      "id": "mem_002",
+      "title": "关于帕克的记忆——多轮",
+      "messages": [
+        {"role": "user", "content": "你和帕克是怎么认识的？"},
+        {"role": "assistant", "content": ""},
+        {"role": "user", "content": "那帕克为什么选择了你而不是别人呢？"},
+        {"role": "assistant", "content": ""},
+        {"role": "user", "content": "听你这么说，帕克真是个温柔的存在呢。他平时都以什么形态出现？"}
+      ],
+      "memory_check": {
+        "target_turns": [1, 3],
+        "expected_keywords": {
+          "1": ["森林", "契约", "家人", "艾力欧尔"],
+          "3": ["猫", "结晶", "小猫"]
+        }
+      },
+      "metrics_focus": ["keyword_hit", "memory_retention", "character_consistency"]
+    },
+    {
+      "id": "mem_003",
+      "title": "王选的回忆——多轮",
+      "messages": [
+        {"role": "user", "content": "你参加王选仪式那天，发生了什么印象深刻的事吗？"},
+        {"role": "assistant", "content": ""},
+        {"role": "user", "content": "在仪式上有人对你的外貌说了些什么吧？"},
+        {"role": "assistant", "content": ""},
+        {"role": "user", "content": "那时候在场的其他候选人，你还记得她们的表现吗？"}
+      ],
+      "memory_check": {
+        "target_turns": [1, 3],
+        "expected_keywords": {
+          "1": ["王选", "候选", "龙历石"],
+          "3": ["库珥修", "普莉希拉", "候选"]
+        }
+      },
+      "metrics_focus": ["keyword_hit", "memory_retention", "character_consistency"]
+    },
+    {
+      "id": "mem_004",
+      "title": "日常事件的记忆——多轮",
+      "messages": [
+        {"role": "user", "content": "今天你吃了什么？"},
+        {"role": "assistant", "content": ""},
+        {"role": "user", "content": "听起来不错。你平时最喜欢在这个时间做什么？"},
+        {"role": "assistant", "content": ""},
+        {"role": "user", "content": "刚才你说到喜欢看书，最近在看什么书呢？"}
+      ],
+      "memory_check": {
+        "target_turns": [3],
+        "expected_keywords": {
+          "3": ["书", "学习"]
+        }
+      },
+      "metrics_focus": ["keyword_hit", "memory_retention", "character_consistency"]
+    }
+  ]
+}
