@@ -1,0 +1,49 @@
+{
+  "slug": "emilia-rezero",
+  "name": "艾米莉娅",
+  "game": "Re:从零开始的异世界生活",
+  "built_at": "2026-06-05T00:00:00+08:00",
+  "source_version": "动画第1-3季 / 小说对应章节",
+  "last_updated": "2026-06-05T00:00:00+08:00",
+  "sources": [
+    "萌娘百科-艾米莉娅",
+    "Re:Zero Wiki-Emilia",
+    "原作小说（文库版）"
+  ],
+  "kit": "character-skill",
+  "auto_activate": true,
+  "dimensions": [
+    "profile",
+    "personality",
+    "interaction",
+    "speaking",
+    "appearance",
+    "quotes",
+    "abilities",
+    "glossary",
+    "memory",
+    "relations"
+  ],
+  "evidence_summary": {
+    "verbatim": 0,
+    "artifact": 0,
+    "impression": 0,
+    "total": 0,
+    "evidence_ratio": 0
+  },
+  "quality_score": {
+    "completeness": 0,
+    "evidence_ratio": 0,
+    "conflict_count": 0,
+    "conflict_score": 0,
+    "test_pass_rate": 0,
+    "overall": 0
+  },
+  "test_results": {
+    "passed": 0,
+    "failed": 0,
+    "scenarios": []
+  },
+  "rating": "开发中",
+  "supplement_suggestions": []
+}
