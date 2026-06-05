@@ -1,6 +1,6 @@
 <div align="center">
 
-# 艾米莉娅.skill
+# 爱蜜莉雅.skill
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-0.1--dev-blue)](https://github.com/yourusername/emilia-skill)
@@ -27,9 +27,9 @@
 
 ## 🌟 项目简介
 
-**艾米莉娅.skill** 是一个基于《Re:从零开始的异世界生活》中角色「艾米莉娅」的 AI 角色技能包（Character Skill Package）。本项目通过蒸馏动画与小说中的台词剧情等资料的方式，将其封装成 skill 文件，用于实现与艾米莉娅的自然、沉浸式对话体验。
+**爱蜜莉雅.skill** 是一个基于《Re:从零开始的异世界生活》中角色「爱蜜莉雅」的 AI 角色技能包（Character Skill Package）。本项目通过蒸馏动画与小说中的台词剧情等资料的方式，将其封装成 skill 文件，用于实现与爱蜜莉雅的自然、沉浸式对话体验。
 
-> "我名为艾米莉娅，是这部『王选』的候选人之一。"
+> "我名为爱蜜莉雅，是这部『王选』的候选人之一。"
 
 ### ✨ 功能特性
 
@@ -47,7 +47,7 @@
 
 ### 基本信息
 
-- **名称**：艾米莉娅（Emilia）
+- **名称**：爱蜜莉雅（Emilia）
 - **性别**：女
 - **种族**：半精灵
 - **阵营**：露格尼卡王国 · 王选候选人
@@ -71,7 +71,7 @@
 
 ### 代表性台词
 
-> "我名为艾米莉娅，是这部『王选』的候选人之一。"
+> "我名为爱蜜莉雅，是这部『王选』的候选人之一。"
 >
 > "———我会成为王。"
 >
@@ -112,7 +112,7 @@ emilia-skill/
 | 文件 | 说明 |
 |------|------|
 | `manifest.json` | 项目配置文件 |
-| `prompt.md` | 核心文件，包含艾米莉娅的完整角色设定 |
+| `prompt.md` | 核心文件，包含爱蜜莉雅的完整角色设定 |
 | `SKILL.md` | 技能包加载入口 |
 | `profile.md` | 角色档案 |
 | `personality.md` | 性格与价值观分析 |
@@ -170,7 +170,7 @@ python tests/test_basic.py
 ```json
 {
   "slug": "emilia-rezero",
-  "name": "艾米莉娅",
+  "name": "爱蜜莉雅",
   "kit": "character-skill",
   "dimensions": [
     "profile",
@@ -197,7 +197,7 @@ python tests/test_basic.py
 |------|------|
 | 初次见面 | 测试角色自我介绍 |
 | 日常闲聊 | 测试日常对话能力 |
-| 核心话题触发 | 测试对艾米莉娅核心话题的回应 |
+| 核心话题触发 | 测试对爱蜜莉雅核心话题的回应 |
 | 情绪触发（积极） | 测试积极情绪响应 |
 | 情绪触发（消极） | 测试消极情绪响应 |
 | 压力场景 | 测试压力情况下的表现 |
@@ -245,7 +245,7 @@ A: 请尊重原作版权，商用需谨慎。
 
 ### 资料来源
 
-- 📖 [萌娘百科 - 艾米莉娅](https://zh.moegirl.org.cn/)
+- 📖 [萌娘百科 - 爱蜜莉雅](https://zh.moegirl.org.cn/)
 - 📖 [Re:Zero Wiki](https://rezero.fandom.com/)
 - 📺 TV 动画《Re:从零开始的异世界生活》
 - 📚 原作小说（著：长月达平）
@@ -258,6 +258,6 @@ A: 请尊重原作版权，商用需谨慎。
 
 ---
 
-**艾米莉娅** — 银发的半精灵，为成为值得人民爱戴的王而努力。
+**爱蜜莉雅** — 银发的半精灵，为成为值得人民爱戴的王而努力。
 
 > "即使被全世界厌恶，我也一定要成为王。"

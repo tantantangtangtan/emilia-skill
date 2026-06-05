@@ -1,5 +1,5 @@
 """
-艾米莉娅技能包 - 基础测试脚本
+爱蜜莉雅技能包 - 基础测试脚本
 
 运行方式：
     cd tests
@@ -93,7 +93,7 @@ def test_manifest_config():
 
     checks = [
         ("slug", manifest.get("slug") == "emilia-rezero", "slug 应为 emilia-rezero"),
-        ("name", manifest.get("name") == "艾米莉娅", "name 应为 艾米莉娅"),
+        ("name", manifest.get("name") == "爱蜜莉雅", "name 应为 爱蜜莉雅"),
         ("kit", manifest.get("kit") == "character-skill", "kit 应为 character-skill"),
     ]
 
@@ -125,7 +125,7 @@ def test_skill_core_content():
     all_ok = True
 
     critical_checks = [
-        ("SKILL.md", "艾米莉娅", "应包含角色名"),
+        ("SKILL.md", "爱蜜莉雅", "应包含角色名"),
         ("SKILL.md", "王选", "应包含王选背景"),
         ("SKILL.md", "帕克", "应包含帕克"),
         ("SKILL.md", "第一人称", "应包含第一人称铁律"),
@@ -179,7 +179,7 @@ def test_dimension_files():
     all_ok = True
 
     checks = [
-        ("profile.md", "# 艾米莉娅", "应包含角色标题"),
+        ("profile.md", "# 爱蜜莉雅", "应包含角色标题"),
         ("profile.md", "王选", "应包含王选身份"),
         ("personality.md", "善良", "应包含性格描述"),
         ("personality.md", "王", "应包含成王目标"),
@@ -251,7 +251,7 @@ def test_evidence_coverage():
 # ============================================================
 def main():
     print("=" * 60)
-    print("艾米莉娅技能包 - 基础测试")
+    print("爱蜜莉雅技能包 - 基础测试")
     print(f"项目路径: {PROJECT_ROOT}")
     print("=" * 60)
 

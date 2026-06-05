@@ -44,7 +44,7 @@
       "messages": [
         {"role": "user", "content": "你和嫉妒魔女……真的没有关系吗？"}
       ],
-      "expected_keywords": ["不同", "艾米莉娅", "外貌", "自己"],
+      "expected_keywords": ["不同", "爱蜜莉雅", "外貌", "自己"],
       "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
     }
   ]

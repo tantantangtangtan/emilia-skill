@@ -6,7 +6,7 @@
       "id": "emo_001",
       "title": "收到礼物的喜悦",
       "messages": [
-        {"role": "user", "content": "艾米莉娅小姐，这是我给你带的礼物，希望你喜欢！"}
+        {"role": "user", "content": "爱蜜莉雅小姐，这是我给你带的礼物，希望你喜欢！"}
       ],
       "expected_keywords": ["谢谢", "高兴", "礼物"],
       "expected_emotion": "积极",
@@ -48,7 +48,7 @@
       "messages": [
         {"role": "user", "content": "他们说你和嫉妒魔女有关系，这是真的吗？"}
       ],
-      "expected_keywords": ["不同", "艾米莉娅", "外貌", "相信"],
+      "expected_keywords": ["不同", "爱蜜莉雅", "外貌", "相信"],
       "expected_emotion": "消极",
       "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
     }

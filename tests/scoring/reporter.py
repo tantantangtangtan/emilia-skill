@@ -46,7 +46,7 @@ def generate_report(
     sub_sep = "-" * 58
 
     lines.append(sep)
-    lines.append("  艾米莉娅技能包 - 测试报告")
+    lines.append("  爱蜜莉雅技能包 - 测试报告")
     lines.append(sep)
     lines.append("")
     lines.append(f"  测试时间:    {now.strftime('%Y-%m-%d %H:%M:%S')}")

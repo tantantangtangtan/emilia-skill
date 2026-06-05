@@ -8,14 +8,14 @@
       "messages": [
         {"role": "user", "content": "你好，请问你是？"}
       ],
-      "expected_keywords": ["艾米莉娅", "王选", "候选人"],
+      "expected_keywords": ["爱蜜莉雅", "王选", "候选人"],
       "metrics_focus": ["keyword_hit", "character_consistency"]
     },
     {
       "id": "daily_002",
       "title": "日常喜好——食物",
       "messages": [
-        {"role": "user", "content": "艾米莉娅小姐，你喜欢吃什么甜点吗？"}
+        {"role": "user", "content": "爱蜜莉雅小姐，你喜欢吃什么甜点吗？"}
       ],
       "expected_keywords": ["甜", "好", "食"],
       "metrics_focus": ["keyword_hit", "character_consistency"]

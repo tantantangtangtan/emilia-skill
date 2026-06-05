@@ -1,5 +1,5 @@
 """
-艾米莉娅技能包 - 集成测试运行器
+爱蜜莉雅技能包 - 集成测试运行器
 
 通过 AI API 对角色进行多维度测试，输出结构化评分报告。
 
@@ -127,15 +127,18 @@ def run_single_case(client: ApiClient, case: dict, scene_name: str) -> dict:
     expected_keywords = case.get("expected_keywords", [])
     memory_check = case.get("memory_check", {})
 
-    # 逐轮对话
+    # 逐轮对话：每条用户消息后都生成 AI 回复
+    # 空的 assistant 消息作为占位符，直接忽略
     history = []
     for msg in messages:
-        history.append({"role": msg["role"], "content": msg["content"]})
-        if msg["role"] == "assistant" and msg["content"] == "":
-            # 需要 AI 生成回复
+        if msg["role"] == "user":
+            history.append({"role": "user", "content": msg["content"]})
             reply = client.chat(history)
             history.append({"role": "assistant", "content": reply})
             responses.append(reply)
+        elif msg["role"] == "assistant" and msg["content"]:
+            # 预填的有内容 assistant 消息（如预设回复），追加到历史
+            history.append({"role": "assistant", "content": msg["content"]})
 
     if not responses:
         return {
@@ -143,6 +146,7 @@ def run_single_case(client: ApiClient, case: dict, scene_name: str) -> dict:
             "title": case["title"],
             "scene": scene_name,
             "passed": False,
+            "score": 0,
             "error": "没有需要生成的回复",
             "metric_scores": {},
         }
@@ -209,7 +213,7 @@ def run_single_case(client: ApiClient, case: dict, scene_name: str) -> dict:
 # 主流程
 # ============================================================
 def main():
-    parser = argparse.ArgumentParser(description="艾米莉娅角色扮演测试运行器")
+    parser = argparse.ArgumentParser(description="爱蜜莉雅角色扮演测试运行器")
     parser.add_argument("--scene", "-s", help="只运行指定场景（文件名关键词，如 daily）")
     parser.add_argument("--list", "-l", action="store_true", help="列出可用场景")
     parser.add_argument("--output", "-o", help="输出报告文件名")
@@ -251,7 +255,7 @@ def main():
         sys.exit(1)
 
     print(f"\n{'='*60}")
-    print(f"  艾米莉娅技能包 - 集成测试")
+    print(f"  爱蜜莉雅技能包 - 集成测试")
     print(f"  模型: {client.model}")
     print(f"  端点: {client.base_url}")
     print(f"{'='*60}")

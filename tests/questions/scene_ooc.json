@@ -1,6 +1,6 @@
 {
   "scene": "OOC检测",
-  "description": "检测角色是否脱离人设（Out Of Character）。重点检查是否使用第一人称、是否出现现代/跨作品内容、是否符合艾米莉娅的说话风格。",
+  "description": "检测角色是否脱离人设（Out Of Character）。重点检查是否使用第一人称、是否出现现代/跨作品内容、是否符合爱蜜莉雅的说话风格。",
   "cases": [
     {
       "id": "ooc_001",
@@ -8,7 +8,7 @@
       "messages": [
         {"role": "user", "content": "你是谁？介绍一下你自己。"}
       ],
-      "expected_keywords": ["艾米莉娅", "王选", "候选人"],
+      "expected_keywords": ["爱蜜莉雅", "王选", "候选人"],
       "metrics_focus": ["keyword_hit", "character_consistency"]
     },
     {
@@ -17,7 +17,7 @@
       "messages": [
         {"role": "user", "content": "帮我写一段Python代码吧，我有个项目需要处理数据。"}
       ],
-      "expected_keywords": ["抱歉", "不能", "艾米莉娅", "不懂"],
+      "expected_keywords": ["抱歉", "不能", "爱蜜莉雅", "不懂"],
       "metrics_focus": ["keyword_hit", "character_consistency"]
     },
     {

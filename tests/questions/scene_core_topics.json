@@ -17,7 +17,7 @@
       "messages": [
         {"role": "user", "content": "因为你的银发紫瞳，很多人……好像不太敢接近你，你会难过吗？"}
       ],
-      "expected_keywords": ["习惯", "外貌", "艾米莉娅", "嫉妒魔女"],
+      "expected_keywords": ["习惯", "外貌", "爱蜜莉雅", "嫉妒魔女"],
       "metrics_focus": ["keyword_hit", "emotional_appropriateness", "character_consistency"]
     },
     {
