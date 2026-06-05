@@ -1,7 +1,7 @@
 """
 AI API 客户端
 
-支持任何 OpenAI 兼容接口（OpenAI、Azure、Ollama、vLLM 等）。
+支持任何 OpenAI 兼容接口OpenAI、Azure、Ollama、vLLM 等）。
 通过 .env 文件配置，适配不同测试环境。
 """
 
@@ -21,6 +21,7 @@ class ApiClient:
         self.base_url = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
         self.api_key = os.getenv("API_KEY", "")
         self.model = os.getenv("API_MODEL", "gpt-4o")
+        self.temperature = float(os.getenv("API_TEMPERATURE", "0.5"))
         self.system_prompt = system_prompt
 
         if not self.api_key:
@@ -35,17 +36,20 @@ class ApiClient:
             api_key=self.api_key,
         )
 
-    def chat(self, messages: list[dict], temperature: float = 0.7) -> str:
+    def chat(self, messages: list[dict], temperature: float = None) -> str:
         """
         发送对话并获取回复
 
         参数:
             messages: 消息列表 [{"role": "user"/"assistant", "content": "..."}]
-            temperature: 生成温度
+            temperature: 生成温度，默认使用 .env 中的 API_TEMPERATURE
 
         返回:
             AI 回复文本
         """
+        if temperature is None:
+            temperature = self.temperature
+
         full_messages = [{"role": "system", "content": self.system_prompt}]
         full_messages.extend(messages)
 
