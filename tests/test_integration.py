@@ -197,6 +197,9 @@ def run_single_case(client: ApiClient, case: dict, scene_name: str) -> dict:
     # 关键词详细信息（用于报告）
     keyword_info = calc_keyword_hit(responses[0], expected_keywords) if responses and expected_keywords else {}
 
+    # 提取用户提问内容（用于报告 Q&A 对照）
+    questions = [m["content"] for m in case["messages"] if m["role"] == "user"]
+
     return {
         "case_id": case["id"],
         "title": case["title"],
@@ -206,6 +209,7 @@ def run_single_case(client: ApiClient, case: dict, scene_name: str) -> dict:
         "keyword_hit": keyword_info,
         "metric_scores": metric_scores,
         "responses": responses,
+        "questions": questions,
     }
 
 
@@ -301,16 +305,33 @@ def main():
             kw_str = f"({kw.get('matched', [])}/{kw.get('total', 0)})" if kw else ""
             print(f"    {status} {result['case_id']} - {result['title']} {kw_str}")
 
-        # 计算场景平均分
-        scores = [r["score"] for r in case_results]
-        scene_avg = sum(scores) / len(scores) if scores else 0
+        # 计算场景得分比例（只计算参与该场景的指标）
+        participated = {}
+        for case in case_results:
+            for mkey, mval in case["metric_scores"].items():
+                if mval is not None:
+                    participated[mkey] = True
+
+        scene_ratio = 0.0
+        participated_weight_sum = 0.0
+        for mkey in participated:
+            w = metric_weights.get(mkey, 0.0)
+            contributed = sum(
+                c["metric_scores"].get(mkey, 0) or 0
+                for c in case_results
+            ) / len(case_results)
+            scene_ratio += contributed * w
+            participated_weight_sum += w
+        scene_ratio = round(scene_ratio / participated_weight_sum, 4) if participated_weight_sum > 0 else 0.0
+
         total_cases += len(cases)
 
         scene_results.append({
             "scene_name": scene_name,
             "case_count": len(cases),
-            "scene_score": round(scene_avg, 4),
+            "scene_ratio": scene_ratio,
             "weight": weight,
+            "participated_metrics": sorted(participated.keys()),
             "cases": case_results,
         })
 
