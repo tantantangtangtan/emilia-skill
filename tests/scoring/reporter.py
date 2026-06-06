@@ -84,25 +84,42 @@ def generate_report(
         )
     lines.append("")
 
-    # ── 二、问题与回答对照 ──
+    # ── 二、用例详情（问题与回答 + 关键词命中） ──
     lines.append(sub_sep)
-    lines.append("  二、问题与回答对照")
+    lines.append("  二、用例详情")
     lines.append(sub_sep)
     lines.append("")
     for sr in scene_results:
         lines.append(f"  【{sr['scene_name']}】")
         lines.append("")
         for case in sr.get("cases", []):
+            status = "[PASS]" if case.get("passed", False) else "[FAIL]"
             questions = case.get("questions", [])
             responses = case.get("responses", [])
-            lines.append(f"    [{case['case_id']}] {case['title']}")
+
+            lines.append(f"    {status} {case['case_id']} - {case['title']}")
+
+            # 关键词命中详情（紧跟标题，不空行）
+            kd = case.get("keyword_detail", {})
+            if kd:
+                matched = kd.get("matched", [])
+                missed = kd.get("missed", [])
+                total = kd.get("total", 0)
+                if total > 0:
+                    kw_parts = []
+                    if matched:
+                        kw_parts.append(f"命中: {', '.join(matched)}")
+                    if missed:
+                        kw_parts.append(f"未命中: {', '.join(missed)}")
+                    lines.append(f"           关键词 ({len(matched)}/{total})  {' | '.join(kw_parts)}")
+
+            # Q&A
             for i, q in enumerate(questions):
+                lines.append(f"")
                 lines.append(f"    Q{i+1}: {q}")
                 if i < len(responses):
-                    # 回答换行显示：每行缩进 6 字符
                     answer = responses[i]
                     lines.append(f"    A{i+1}:")
-                    # 按 70 字符宽度自动换行
                     while len(answer) > 70:
                         lines.append(f"           {answer[:70]}")
                         answer = answer[70:]
@@ -156,37 +173,9 @@ def generate_report(
     lines.append(f"  评级:      {rating}")
     lines.append("")
 
-    # ── 五、详细用例结果 ──
+    # ── 五、原始评分数据 ──
     lines.append(sub_sep)
-    lines.append("  五、详细用例结果")
-    lines.append(sub_sep)
-    lines.append("")
-    for sr in scene_results:
-        lines.append(f"  【{sr['scene_name']}】")
-        lines.append("")
-        for case in sr.get("cases", []):
-            status = "[PASS]" if case.get("passed", False) else "[FAIL]"
-            lines.append(f"    {status} {case['case_id']} - {case['title']}")
-
-            # 显示关键词命中/未命中详情
-            kd = case.get("keyword_detail", {})
-            if kd:
-                matched = kd.get("matched", [])
-                missed = kd.get("missed", [])
-                total = kd.get("total", 0)
-                if total > 0:
-                    hit_ratio = f"{len(matched)}/{total}"
-                    lines.append(f"           关键词命中: {hit_ratio}")
-                    if matched:
-                        lines.append(f"           命中: {', '.join(matched)}")
-                    if missed:
-                        lines.append(f"           未命中: {', '.join(missed)}")
-            lines.append("")
-        lines.append("")
-
-    # ── 六、原始评分数据 ──
-    lines.append(sub_sep)
-    lines.append("  六、原始评分数据（JSON）")
+    lines.append("  五、原始评分数据（JSON）")
     lines.append(sub_sep)
     lines.append("")
     raw_data = {
