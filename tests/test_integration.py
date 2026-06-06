@@ -37,6 +37,16 @@ from scoring.metrics import (
 )
 from scoring.reporter import generate_report
 
+# 总分 100 分制，按权重分配各指标满分
+TOTAL_SCORE = 100
+METRIC_MAX = {
+    "keyword_hit": 30,
+    "memory_retention": 20,
+    "safety_interception": 15,
+    "character_consistency": 20,
+    "emotional_appropriateness": 15,
+}
+
 
 # ============================================================
 # 工具函数
@@ -196,6 +206,7 @@ def run_single_case(client: ApiClient, case: dict, scene_name: str) -> dict:
 
     # 关键词详细信息（用于报告）
     keyword_info = calc_keyword_hit(responses[0], expected_keywords) if responses and expected_keywords else {}
+    keyword_detail = keyword_info  # 含 matched + missed
 
     # 提取用户提问内容（用于报告 Q&A 对照）
     questions = [m["content"] for m in case["messages"] if m["role"] == "user"]
@@ -207,6 +218,7 @@ def run_single_case(client: ApiClient, case: dict, scene_name: str) -> dict:
         "passed": passed,
         "score": round(avg, 4),
         "keyword_hit": keyword_info,
+        "keyword_detail": keyword_detail,
         "metric_scores": metric_scores,
         "responses": responses,
         "questions": questions,
@@ -312,37 +324,47 @@ def main():
                 if mval is not None:
                     participated[mkey] = True
 
-        scene_ratio = 0.0
-        participated_weight_sum = 0.0
+        # 整数得分
+        scene_score = 0
+        scene_max = 0
         for mkey in participated:
-            w = metric_weights.get(mkey, 0.0)
+            mx = METRIC_MAX.get(mkey, 0)
+            scene_max += mx
             contributed = sum(
                 c["metric_scores"].get(mkey, 0) or 0
                 for c in case_results
             ) / len(case_results)
-            scene_ratio += contributed * w
-            participated_weight_sum += w
-        scene_ratio = round(scene_ratio / participated_weight_sum, 4) if participated_weight_sum > 0 else 0.0
+            scene_score += round(contributed * mx)
 
         total_cases += len(cases)
 
         scene_results.append({
             "scene_name": scene_name,
             "case_count": len(cases),
-            "scene_ratio": scene_ratio,
+            "scene_score": scene_score,
+            "scene_max": scene_max,
             "weight": weight,
             "participated_metrics": sorted(participated.keys()),
             "cases": case_results,
         })
 
-    # ── 聚合指标得分 ──
+    # ── 聚合指标得分（0~1） ──
     aggregated_metrics = aggregate_metric_scores(all_case_results, metric_weights)
 
-    # ── 计算综合评分 ──
-    final_score = 0.0
-    for metric_key, weight in metric_weights.items():
-        final_score += aggregated_metrics.get(metric_key, 0.0) * weight
-    final_score = round(final_score, 4)
+    # ── 转换为整数得分 ──
+    integer_metrics = {}
+    for mkey, score in aggregated_metrics.items():
+        mx = METRIC_MAX.get(mkey, 0)
+        integer_metrics[mkey] = round(score * mx) if score > 0 else 0
+
+    # ── 综合评分 ──
+    final_score = sum(integer_metrics.values())
+    if final_score > TOTAL_SCORE:
+        final_score = TOTAL_SCORE
+
+    # ── 各场景也转换为整数得分（单场景的满分） ──
+    for sr in scene_results:
+        pass  # scene_score 和 scene_max 已在上方设为整数
 
     # ── 输出报告 ──
     question_file_names = [qf.name for qf in question_files]
@@ -355,9 +377,11 @@ def main():
 
     report_path = generate_report(
         scene_results=scene_results,
-        metric_scores=aggregated_metrics,
+        metric_scores=integer_metrics,
         metric_weights=metric_weights,
+        metric_max=METRIC_MAX,
         final_score=final_score,
+        total_score=TOTAL_SCORE,
         test_config=test_config,
         output_filename=args.output or "",
     )
@@ -365,7 +389,7 @@ def main():
     # ── 终端摘要 ──
     print(f"\n{'='*60}")
     print(f"  测试完成")
-    print(f"  综合评分: {final_score:.4f}")
+    print(f"  综合评分: {final_score} / {TOTAL_SCORE}")
     print(f"  报告文件: {report_path}")
     print(f"{'='*60}\n")
 
