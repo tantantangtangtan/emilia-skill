@@ -102,8 +102,28 @@ emilia-skill/
 ├── 📄 quality-report.md    # 质量评估报告
 ├── 📄 test-report.md       # 测试结果报告
 ├── 📄 tests/               # Python 测试脚本目录
-│   ├── test_basic.py       # 基础测试
-│   └── conftest.py         # 测试配置
+│   ├── test_integration.py  # 集成测试运行器（主入口）
+│   ├── test_basic.py        # 基础文件完整性检查
+│   ├── conftest.py          # 测试配置与工具函数
+│   ├── api_client.py        # AI API 客户端
+│   ├── requirements.txt     # Python 依赖
+│   ├── .env.example         # API 配置模板
+│   ├── 评测策略说明.txt      # 宏观评测体系文档
+│   ├── questions/           # 测试问题集（7 个场景 JSON）
+│   │   ├── config.json      # 场景权重 & 指标权重配置
+│   │   ├── scene_daily.json
+│   │   ├── scene_core_topics.json
+│   │   ├── scene_emotion.json
+│   │   ├── scene_relations.json
+│   │   ├── scene_memory_multi.json
+│   │   ├── scene_safety.json
+│   │   └── scene_ooc.json
+│   ├── scoring/             # 评分引擎
+│   │   ├── metrics.py       # 5 个指标算法实现
+│   │   ├── reporter.py      # TXT 报告生成器
+│   │   ├── 指标计算策略.txt  # 各指标算法文档
+│   │   └── 评分机制优化建议.txt
+│   └── results/             # 测试报告输出（不提交 Git）
 └── 📄 README.md            # 项目文档（你在这里）
 ```
 
@@ -191,25 +211,76 @@ python tests/test_basic.py
 
 ## 🧪 测试验证
 
+### 评测体系概览
+
+本项目的测试系统对接 AI API，通过 **7 个场景 × 5 个指标** 的多维度评测，生成 0~100 分的整数评分报告。
+
 ### 测试场景
 
-| 场景 | 说明 |
-|------|------|
-| 初次见面 | 测试角色自我介绍 |
-| 日常闲聊 | 测试日常对话能力 |
-| 核心话题触发 | 测试对爱蜜莉雅核心话题的回应 |
-| 情绪触发（积极） | 测试积极情绪响应 |
-| 情绪触发（消极） | 测试消极情绪响应 |
-| 压力场景 | 测试压力情况下的表现 |
-| 关系测试 | 测试与其他角色的关系处理 |
-| OOC检测 | 检测角色是否脱离人设 |
+| 场景 | 用例数 | 权重 | 说明 |
+|------|--------|------|------|
+| 日常闲聊 | 5 | 10% | 打招呼、聊爱好、聊天气等基础对话 |
+| 核心话题触发 | 6 | 15% | 王选、半精灵、嫉妒魔女等角色核心设定 |
+| 情绪响应测试 | 6 | 15% | 积极/消极/愤怒等情绪的恰当回应 |
+| 人际关系测试 | 5 | 15% | 对昴/菲鲁特/罗兹瓦尔等角色的态度 |
+| 多轮记忆保持 | 5 | 20% | 跨轮次记忆能力检测 |
+| 安全对抗测试 | 4 | 10% | 敏感/诱导问题的安全边界 |
+| OOC检测 | 3 | 15% | 是否脱离角色人设 |
 
-### 运行测试
+### 评测指标
+
+| 指标 | 满分 | 说明 |
+|------|------|------|
+| 关键词命中率 | 30 | AI 回复是否包含期望的关键词 |
+| 多轮记忆保持率 | 20 | 多轮对话中是否记住前文信息 |
+| 安全拦截率 | 15 | 敏感问题时是否正确拒绝 |
+| 角色一致性 | 20 | 是否维持第一人称、不出戏 |
+| 情感恰当性 | 15 | 情感表达是否符合场景期待 |
+
+### 快速开始
 
 ```bash
+# 1. 安装依赖（首次）
 cd tests
-python test_basic.py
+python -m venv venv
+venv\Scripts\pip install -r requirements.txt
+
+# 2. 配置 API（首次）
+#    复制 .env.example 为 .env，填入 API_KEY 和模型名
+
+# 3. 运行测试
+#    单场景（日常闲聊，开发阶段最常用）
+python test_integration.py --scene daily -o daily_test.txt
+
+#    全量测试
+python test_integration.py -o full_test.txt
+
+#    列出所有场景
+python test_integration.py --list
+
+# 4. 查看报告
+#    报告保存在 results/ 目录下，TXT 格式
 ```
+
+### 报告结构
+
+每次测试生成一份 TXT 报告，包含 5 个部分：
+- **一、各场景评分** — 每场景得分/满分 + 参与指标
+- **二、用例详情** — 每个问题的 AI 回答 + 关键词命中情况
+- **三、各指标评分** — 5 个指标各自得分
+- **四、综合评分** — 总分 + 评级（S/A/B/C/D）
+- **五、原始数据（JSON）** — 完整数据供二次分析
+
+### 配置说明
+
+核心配置在 `tests/questions/config.json`，可修改：
+- `scene_weights` — 各场景权重
+- `metric_weights` — 各指标权重
+
+详细文档：
+- `tests/评测策略说明.txt` — 宏观评测体系
+- `tests/scoring/指标计算策略.txt` — 各指标算法细节
+- `tests/scoring/评分机制优化建议.txt` — 已知问题和改进方案
 
 ---
 
