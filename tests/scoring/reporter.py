@@ -48,6 +48,14 @@ def generate_report(
     num_scenes = len(scene_results)
     participated = _collect_participated_metrics(scene_results)
 
+    # 计算测试序号
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    existing_reports = sorted(RESULTS_DIR.glob("*.txt"))
+    test_seq = len(existing_reports) + 1
+
+    # ── 计算有效满分（仅参与指标） ──
+    effective_max = sum(metric_max.get(m, 0) for m in participated)
+
     lines = []
     sep = "=" * 62
     sub_sep = "-" * 62
@@ -57,12 +65,14 @@ def generate_report(
     lines.append("  爱蜜莉雅技能包 - 测试报告  (满分 {total_score} 分)".format(total_score=total_score))
     lines.append(sep)
     lines.append("")
+    lines.append(f"  测试序号:    第 {test_seq} 次")
     lines.append(f"  测试时间:    {now.strftime('%Y-%m-%d %H:%M:%S')}")
     lines.append(f"  测试模型:    {test_config.get('model', 'N/A')}")
     lines.append(f"  API 端点:    {test_config.get('api_base', 'N/A')}")
     lines.append(f"  测试场景数:  {num_scenes}")
     lines.append(f"  问题集文件:  {test_config.get('question_files', 'N/A')}")
     lines.append(f"  测试用例数:  {test_config.get('total_cases', 0)}")
+    lines.append(f"  PASS 标准:   用例指标均分 >= 0.5")
     lines.append("")
 
     # ── 一、各场景评分 ──
@@ -99,32 +109,30 @@ def generate_report(
 
             lines.append(f"    {status} {case['case_id']} - {case['title']}")
 
-            # 关键词命中详情（紧跟标题，不空行）
+            # Q&A（先输出问题和回答）
+            for i, q in enumerate(questions):
+                lines.append(f"")
+                lines.append(f"    Q{i+1}: {q}")
+                if i < len(responses):
+                    answer = responses[i].strip()
+                    lines.append(f"    A{i+1}: {answer}")
+
+            # 关键词命中详情（放在 Q&A 下方）
             kd = case.get("keyword_detail", {})
             if kd:
                 matched = kd.get("matched", [])
                 missed = kd.get("missed", [])
                 total = kd.get("total", 0)
                 if total > 0:
-                    kw_parts = []
+                    lines.append(f"           → 关键词 ({len(matched)}/{total})")
                     if matched:
-                        kw_parts.append(f"命中: {', '.join(matched)}")
+                        lines.append(f"              命中: {', '.join(matched)}")
+                    else:
+                        lines.append(f"              命中：无")
                     if missed:
-                        kw_parts.append(f"未命中: {', '.join(missed)}")
-                    lines.append(f"           关键词 ({len(matched)}/{total})  {' | '.join(kw_parts)}")
-
-            # Q&A
-            for i, q in enumerate(questions):
-                lines.append(f"")
-                lines.append(f"    Q{i+1}: {q}")
-                if i < len(responses):
-                    answer = responses[i]
-                    lines.append(f"    A{i+1}:")
-                    while len(answer) > 70:
-                        lines.append(f"           {answer[:70]}")
-                        answer = answer[70:]
-                    if answer:
-                        lines.append(f"           {answer}")
+                        lines.append(f"              未命中: {', '.join(missed)}")
+                    else:
+                        lines.append(f"              未命中：无")
             lines.append("")
         lines.append("")
 
@@ -158,24 +166,14 @@ def generate_report(
     if num_scenes == 1:
         lines.append(f"  (注意: 仅测试了 1 个场景，得分仅反映该场景参与的指标)")
         lines.append(f"  该场景参与指标: {', '.join(METRIC_LABELS.get(m, m) for m in participated)}")
-
-    rate = final_score / total_score if total_score > 0 else 0
-    if rate >= 0.9:
-        rating = "S - 完美"
-    elif rate >= 0.8:
-        rating = "A - 优秀"
-    elif rate >= 0.7:
-        rating = "B - 良好"
-    elif rate >= 0.6:
-        rating = "C - 及格"
-    else:
-        rating = "D - 需改进"
-    lines.append(f"  评级:      {rating}")
+        if effective_max > 0 and effective_max < total_score:
+            rate = final_score / effective_max if effective_max > 0 else 0
+            lines.append(f"  本场有效满分: {effective_max} 分  |  有效得分率: {rate:.0%}  ({final_score}/{effective_max})")
     lines.append("")
 
     # ── 五、原始评分数据 ──
     lines.append(sub_sep)
-    lines.append("  五、原始评分数据（JSON）")
+    lines.append("  五、原始评分数据")
     lines.append(sub_sep)
     lines.append("")
     raw_data = {
@@ -188,11 +186,19 @@ def generate_report(
         "total_score": total_score,
         "participated_metrics": sorted(participated),
     }
-    lines.append(json.dumps(raw_data, ensure_ascii=False, indent=2))
+
+    # JSON 写入独立文件
+    json_filename = output_filename.replace(".txt", ".json") if output_filename.endswith(".txt") else output_filename + ".json"
+    json_path = RESULTS_DIR / json_filename
+    json_path.write_text(json.dumps(raw_data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    lines.append(f"  详细评分数据已保存至: {json_filename}")
+    lines.append(f"  (JSON 格式，包含所有指标的原始分数和用例级详情)")
     lines.append("")
 
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     content = "\n".join(lines)
+    report_path = RESULTS_DIR / output_filename  # 注意: 此处 RESULTS_DIR 已在前方 mkdir
     report_path.write_text(content, encoding="utf-8")
     print(f"\n[报告] 已保存至: {report_path}")
+    print(f"[数据] 已保存至: {json_path}")
     return str(report_path)

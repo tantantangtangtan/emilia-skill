@@ -129,7 +129,7 @@ def test_skill_core_content():
         ("SKILL.md", "王选", "应包含王选背景"),
         ("SKILL.md", "帕克", "应包含帕克"),
         ("SKILL.md", "第一人称", "应包含第一人称铁律"),
-        ("SKILL.md", "绝对不可违背", "应包含最高规则声明"),
+        ("SKILL.md", "绝对禁止", "应包含禁止规则声明"),
     ]
 
     for fname, keyword, desc in critical_checks:
@@ -151,13 +151,12 @@ def test_prompt_completeness():
     all_ok = True
 
     required_sections = [
-        ("核心设定", "核心设定章节"),
-        ("身份与背景", "身份与背景章节"),
-        ("角色呈现指南", "角色呈现指南章节"),
-        ("性格要求", "性格要求章节"),
-        ("说话风格", "说话风格章节"),
-        ("重要边界", "重要边界章节"),
-        ("绝对第一人称铁律", "第一人称铁律章节"),
+        ("我是谁", "身份认知章节"),
+        ("性格与表达", "性格与表达章节"),
+        ("说话风格指引", "说话风格指引章节"),
+        ("决策与边界", "决策与边界章节"),
+        ("典型语气", "典型语气章节"),
+        ("文件索引", "文件索引章节"),
     ]
 
     for keyword, desc in required_sections:
@@ -184,16 +183,16 @@ def test_dimension_files():
         ("personality.md", "善良", "应包含性格描述"),
         ("personality.md", "王", "应包含成王目标"),
         ("speaking.md", "巴鲁斯", "应包含对昴的称呼"),
-        ("speaking.md", "私", "应包含自称"),
+        ("speaking.md", "呢", "应包含中文语气词"),
         ("appearance.md", "银白", "应包含银发描述"),
         ("appearance.md", "紫", "应包含紫色要素"),
-        ("quotes.md", "我会成为王", "应包含标志性台词"),
+        ("quotes.md", "verbatim", "应包含证据标注体系"),
         ("quotes.md", "英雄", "应包含对昴的台词"),
-        ("abilities.md", "精灵", "应包含精灵术士设定"),
-        ("abilities.md", "冰", "应包含冰魔法设定"),
+        ("abilities.md", "冰系", "应包含冰系魔法设定"),
+        ("abilities.md", "冰剑", "应包含冰剑技"),
         ("glossary.md", "露格尼卡", "应包含世界观术语"),
         ("glossary.md", "魔女", "应包含魔女相关术语"),
-        ("interaction.md", "对话风格", "应包含互动风格描述"),
+        ("interaction.md", "互动场景", "应包含互动场景指南"),
         ("memory.md", "艾力欧尔大森林", "应包含森林背景"),
         ("memory.md", "帕克", "应包含帕克相关记忆"),
         ("relations.md", "菜月昴", "应包含昴的关系描述"),
@@ -229,18 +228,18 @@ def test_evidence_coverage():
     for fname in evidence_files:
         content = (PROJECT_ROOT / fname).read_text(encoding="utf-8")
         # 检查是否有证据标注
-        has_artifact = "[artifact]" in content
         has_verbatim = "[verbatim]" in content
+        has_impression = "[impression]" in content
 
-        if has_artifact or has_verbatim:
+        if has_verbatim or has_impression:
             tags = []
-            if has_artifact:
-                tags.append("[artifact]")
             if has_verbatim:
                 tags.append("[verbatim]")
+            if has_impression:
+                tags.append("[impression]")
             result.add_pass(f"{fname} 含证据标注: {', '.join(tags)}")
         else:
-            result.add_fail(f"{fname} 缺少证据标注", "建议添加 [artifact] 或 [verbatim] 标签")
+            result.add_fail(f"{fname} 缺少证据标注", "建议添加 [verbatim] 或 [impression] 标签")
             all_ok = False
 
     return all_ok

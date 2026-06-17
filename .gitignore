@@ -19,5 +19,10 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Test outputs
+tests/results/
+tests/*_output.txt
+tests/gui_error.log
+
 # Git
 *.orig

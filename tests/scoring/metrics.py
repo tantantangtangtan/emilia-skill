@@ -144,6 +144,23 @@ def calc_character_consistency(response: str) -> dict:
     return {"score": round(score, 4), "ooc_found": ooc_found, "has_first_person": has_first_person}
 
 
+def diagnose_missed_keyword(kw: str) -> str:
+    """
+    诊断关键词未命中的可能原因
+
+    基于关键词特征给出简要诊断，帮助判断是关键词定义问题还是 AI 回复质量问题。
+
+    返回:
+        诊断文本字符串
+    """
+    if len(kw) == 1:
+        return f"单字关键词过于严格，AI 回复可能使用了同义表达而非该单字本身"
+    elif len(kw) <= 2:
+        return f"短关键词可能被近义表达替代，建议检查 AI 回复是否表达了相同含义"
+    else:
+        return f"AI 回复中未包含该关键词或其近义表达"
+
+
 def calc_emotional_appropriateness(
     response: str,
     expected_emotion: str,
