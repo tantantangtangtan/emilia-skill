@@ -20,13 +20,13 @@ REQUIRED_FILES = [
     "SKILL.md", "prompt.md", "profile.md", "personality.md",
     "speaking.md", "appearance.md", "quotes.md", "abilities.md",
     "glossary.md", "interaction.md", "memory.md", "relations.md",
-    "conflicts.md", "manifest.json", "README.md",
+    "conflicts.md", "manifest.json", "README.md", "LICENSE",
 ]
 
 REQUIRED_DIMENSIONS_IN_MANIFEST = [
     "profile", "personality", "interaction", "speaking",
     "appearance", "quotes", "abilities", "glossary",
-    "memory", "relations",
+    "memory", "relations", "conflicts", "prompt",
 ]
 
 # ── 指标配置 ────────────────────────────────────────────

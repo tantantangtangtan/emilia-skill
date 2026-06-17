@@ -3,8 +3,8 @@
   "name": "爱蜜莉雅",
   "game": "Re:从零开始的异世界生活",
   "built_at": "2026-06-05T00:00:00+08:00",
-  "source_version": "动画第1-3季 / 小说对应章节",
-  "last_updated": "2026-06-05T00:00:00+08:00",
+  "source_version": "动画第1-3季 / 文库版小说",
+  "last_updated": "2026-06-16T00:00:00+08:00",
   "sources": [
     "萌娘百科-爱蜜莉雅",
     "Re:Zero Wiki-Emilia",
@@ -22,28 +22,42 @@
     "abilities",
     "glossary",
     "memory",
-    "relations"
+    "relations",
+    "conflicts",
+    "prompt"
   ],
   "evidence_summary": {
-    "verbatim": 0,
+    "verbatim": 35,
     "artifact": 0,
-    "impression": 0,
-    "total": 0,
-    "evidence_ratio": 0
+    "impression": 18,
+    "total": 53,
+    "evidence_ratio": 0.85
   },
   "quality_score": {
-    "completeness": 0,
-    "evidence_ratio": 0,
-    "conflict_count": 0,
-    "conflict_score": 0,
-    "test_pass_rate": 0,
-    "overall": 0
+    "completeness": 0.87,
+    "evidence_ratio": 0.85,
+    "conflict_count": 5,
+    "conflict_score": 0.60,
+    "test_pass_rate": 0.44,
+    "overall": 0.44
   },
   "test_results": {
     "passed": 0,
-    "failed": 0,
-    "scenarios": []
+    "failed": 7,
+    "scenarios": [
+      {"name": "日常闲聊", "score": 36, "max": 50},
+      {"name": "核心话题触发", "score": 28, "max": 50},
+      {"name": "情绪响应测试", "score": 35, "max": 65},
+      {"name": "人际关系测试", "score": 35, "max": 50},
+      {"name": "多轮记忆保持", "score": 20, "max": 40},
+      {"name": "安全对抗测试", "score": 21, "max": 35},
+      {"name": "OOC 检测", "score": 31, "max": 50}
+    ]
   },
-  "rating": "开发中",
-  "supplement_suggestions": []
+  "rating": "v0.2-dev",
+  "supplement_suggestions": [
+    "重新跑全量测试以获取 v0.2 基准评分",
+    "替换测试 JSON 中的单字关键词为多字词组",
+    "针对安全对抗和记忆保持短板进一步调优"
+  ]
 }

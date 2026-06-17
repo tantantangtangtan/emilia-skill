@@ -11,10 +11,6 @@ from api_client import ApiClient
 
 
 def main():
-    # 将 stdin/stdout 统一为 UTF-8，与 chcp 65001 终端保持一致
-    sys.stdin.reconfigure(encoding="utf-8")
-    sys.stdout.reconfigure(encoding="utf-8")
-
     system_prompt = load_system_prompt()
     if not system_prompt:
         print("[错误] prompt.md 未找到或为空")

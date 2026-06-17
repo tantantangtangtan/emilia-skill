@@ -398,12 +398,8 @@ class App:
         if not PYTHON_EXE.exists():
             messagebox.showerror("错误", f"未找到 Python 解释器:\n{PYTHON_EXE}")
             return
-        # 弹出独立命令行窗口：PYTHONUTF8=1 解决中文 IME 输入，chcp 65001 解决终端显示
-        # 注意：set 与 && 之间不能有空格，否则变量值末尾会带空格，Python 会报 preconfig_init_utf8_mode 错误
-        chat_cmd = (
-            f'start "爱蜜莉雅 - 对话" cmd /k '
-            f'"chcp 65001 >nul && set PYTHONUTF8=1&& set PYTHONIOENCODING=utf-8&& cd /d {TESTS_DIR} && {PYTHON_EXE} {CHAT_SCRIPT}"'
-        )
+        # 弹出独立命令行窗口
+        chat_cmd = f'start "爱蜜莉雅 - 对话" cmd /k "cd /d {TESTS_DIR} && {PYTHON_EXE} {CHAT_SCRIPT}"'
         self._term_log(f"启动自由对话窗口...\n")
         subprocess.Popen(chat_cmd, shell=True)
         self._status_var.set("已启动独立对话窗口")
